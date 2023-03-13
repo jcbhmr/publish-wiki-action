@@ -10,6 +10,7 @@ echo "🟪 Splitting subtree on $INPUT_PATH..."
 # subdirectory. It then prints out the ref to that branch which we capture in
 # a variable.
 ref=$(git subtree split -P "$INPUT_PATH")
+echo "🟩 Successfully split $INPUT_PATH into $ref."
 
 # TODO: Include $GITHUB_TOKEN in here to make it work pushing to other repos
 # outside of the current $GITHUB_REPOSITORY
