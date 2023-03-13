@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+source url.sh
+
 echo "🟪 Splitting subtree on $INPUT_PATH..."
 # Git will extract the specified subdirectory and create a new commit history
 # that includes only the files and directories within that subdirectory. This
@@ -12,9 +14,10 @@ echo "🟪 Splitting subtree on $INPUT_PATH..."
 ref=$(git subtree split -P "$INPUT_PATH")
 echo "🟩 Successfully split $INPUT_PATH into $ref."
 
-# TODO: Include $GITHUB_TOKEN in here to make it work pushing to other repos
-# outside of the current $GITHUB_REPOSITORY
-remote="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.wiki.git"
+scheme=$(url scheme "$GITHUB_SERVER_URL")
+host=$(url host "$GITHUB_SERVER_URL")
+remote="$scheme//$GITHUB_ACTOR:$INPUT_TOKEN@$host/$INPUT_REPO.wiki.git"
+# Don't worry! The $INPUT_TOKEN is masked by GitHub Actions when postprocessed.
 echo "🟪 Pushing $ref too $remote..."
 git push -f "$remote" "$ref:master"
 echo "🟩 Successfully published to the GitHub wiki for $GITHUB_REPOSITORY."
