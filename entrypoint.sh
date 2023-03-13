@@ -14,9 +14,10 @@ echo "🟪 Splitting subtree on $INPUT_PATH..."
 ref=$(git subtree split -P "$INPUT_PATH")
 echo "🟩 Successfully split $INPUT_PATH into $ref."
 
-scheme=$(url scheme "$GITHUB_SERVER_URL")
-host=$(url host "$GITHUB_SERVER_URL")
-remote="$scheme//$GITHUB_ACTOR:$INPUT_TOKEN@$host/$INPUT_REPO.wiki.git"
+scheme=$(url "$GITHUB_SERVER_URL" | jq -r .scheme)
+host=$(url "$GITHUB_SERVER_URL" | jq -r .host)
+pathame=$(url "$GITHUB_SERVER_URL" | jq -r .pathname)
+remote="$scheme//$GITHUB_ACTOR:$INPUT_TOKEN@$host$pathname$INPUT_REPO.wiki.git"
 # Don't worry! The $INPUT_TOKEN is masked by GitHub Actions when postprocessed.
 echo "🟪 Pushing $ref too $remote..."
 git push -f "$remote" "$ref:master"
