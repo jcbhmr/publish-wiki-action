@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TEMP_CLONE_FOLDER="temp_wiki_$GITHUB_SHA"
 TEMP_EXCLUDED_FILE="temp_wiki_excluded_$GITHUB_SHA.txt"
